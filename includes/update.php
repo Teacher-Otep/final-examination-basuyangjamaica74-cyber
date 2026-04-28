@@ -3,12 +3,18 @@ require_once "db.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $sql = "INSERT INTO students (name, surname, middlename, address, contact_number)
-            VALUES (:name, :surname, :middlename, :address, :contact)";
+    $sql = "UPDATE students SET 
+            name=:name,
+            surname=:surname,
+            middlename=:middlename,
+            address=:address,
+            contact_number=:contact
+            WHERE id=:id";
 
     $stmt = $pdo->prepare($sql);
 
     $stmt->execute([
+        ':id' => $_POST['id'],
         ':name' => $_POST['name'],
         ':surname' => $_POST['surname'],
         ':middlename' => $_POST['middlename'],
@@ -16,6 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ':contact' => $_POST['contact']
     ]);
 
-    header("Location: ../public/index.php?status=success");
+    header("Location: ../public/index.php?status=updated");
     exit();
 }
